@@ -1,0 +1,31 @@
+async function enviarScript(scriptText) {
+//argument error
+  if (!scriptText || !scriptText.trim()) {
+    throw new Error("O argumento scriptText é inválido");
+  }
+
+  const lines = scriptText.split(/[\n\t]+/).map(line => line.trim()).filter(line => line);
+  const main = document.querySelector("#main");
+  const textarea = main.querySelector(`div[contenteditable="true"]`);
+//error you are not in the chat
+  if (!textarea) throw new Error("Não há uma conversa aberta");
+
+  for (let i = 0; i < 49; i++) {
+  //change this code for another word
+    const line = "oi";
+
+    textarea.focus();
+    document.execCommand('insertText', false, line);
+    textarea.dispatchEvent(new Event('change', {bubbles: true}));
+
+    await new Promise(resolve => setTimeout(resolve, 250));
+
+    (main.querySelector(`[data-testid="send"]`) || main.querySelector(`[data-icon="send"]`)).click();
+
+    await new Promise(resolve => setTimeout(resolve, 100));
+  }
+
+  return 49;
+}
+//code finished 
+enviarScript("for (let i = 0; i < 49; i++) { oi }").then(e => console.log(`Código finalizado, ${e} mensagens enviadas`)).catch(console.error);
